@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useWorkoutTemplates } from "../context/WorkoutContext";
 import Card from "../components/Card";
@@ -16,12 +16,69 @@ export default function WorkoutEditor() {
   const [showPicker, setShowPicker] = useState(false);
   const [showNameEdit, setShowNameEdit] = useState(false);
 
+  // ── Drag state ──
+  const [dragIndex, setDragIndex] = useState(null);
+  const [overIndex, setOverIndex] = useState(null);
+  const cardRefs = useRef([]);
+  const dragRef = useRef({ active: false, startIndex: null });
+
   // Initialize local copy from context (handles async arrival after create)
   useEffect(() => {
     if (source && !template) {
       setTemplate(structuredClone(source));
     }
   }, [source]);
+
+  // ── Drag handlers ──
+  const handleDragStart = useCallback((e, index) => {
+    e.preventDefault();
+    dragRef.current = { active: true, startIndex: index };
+    setDragIndex(index);
+    setOverIndex(index);
+
+    const onMove = (ev) => {
+      if (!dragRef.current.active) return;
+      const y = ev.touches ? ev.touches[0].clientY : ev.clientY;
+      for (let i = 0; i < cardRefs.current.length; i++) {
+        const el = cardRefs.current[i];
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        if (y >= rect.top && y <= rect.bottom) {
+          setOverIndex(i);
+          break;
+        }
+      }
+    };
+
+    const onEnd = () => {
+      if (dragRef.current.active) {
+        const from = dragRef.current.startIndex;
+        dragRef.current = { active: false, startIndex: null };
+
+        setOverIndex((to) => {
+          if (from !== null && to !== null && from !== to) {
+            setTemplate((prev) => {
+              const next = [...prev.exercises];
+              const [moved] = next.splice(from, 1);
+              next.splice(to, 0, moved);
+              return { ...prev, exercises: next };
+            });
+          }
+          return null;
+        });
+        setDragIndex(null);
+      }
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup", onEnd);
+      document.removeEventListener("touchmove", onMove);
+      document.removeEventListener("touchend", onEnd);
+    };
+
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onEnd);
+    document.addEventListener("touchmove", onMove, { passive: true });
+    document.addEventListener("touchend", onEnd);
+  }, []);
 
   // Not found
   if (!source && !template) {
@@ -73,15 +130,6 @@ export default function WorkoutEditor() {
       ...prev,
       exercises: prev.exercises.filter((ex) => ex.id !== exerciseId),
     }));
-  };
-
-  const moveExercise = (index, direction) => {
-    setTemplate((prev) => {
-      const next = [...prev.exercises];
-      const target = direction === "up" ? index - 1 : index + 1;
-      [next[index], next[target]] = [next[target], next[index]];
-      return { ...prev, exercises: next };
-    });
   };
 
   // ── Set operations ──
@@ -199,111 +247,128 @@ export default function WorkoutEditor() {
 
       {/* ── Exercise cards with per-set rows ── */}
       <div className="space-y-4">
-        {template.exercises.map((exercise, exIndex) => (
-          <Card key={exercise.id}>
-            {/* Exercise header */}
-            <div className="p-4 flex justify-between items-center border-b border-white/5">
-              <div className="flex items-center gap-3">
-                <span className="text-xl">{exercise.icon}</span>
-                <h3 className="text-lg font-bold">{exercise.name}</h3>
-              </div>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => moveExercise(exIndex, "up")}
-                  disabled={exIndex === 0}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-neutral-soft hover:text-primary hover:bg-primary/10 transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
-                >
-                  <Icon name="keyboard_arrow_up" className="text-lg" />
-                </button>
-                <button
-                  onClick={() => moveExercise(exIndex, "down")}
-                  disabled={exIndex === template.exercises.length - 1}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-neutral-soft hover:text-primary hover:bg-primary/10 transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
-                >
-                  <Icon name="keyboard_arrow_down" className="text-lg" />
-                </button>
-                <button
-                  onClick={() => removeExercise(exercise.id)}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-neutral-soft hover:text-red-400 hover:bg-red-400/10 transition-colors"
-                >
-                  <Icon name="delete" className="text-lg" />
-                </button>
-              </div>
-            </div>
+        {template.exercises.map((exercise, exIndex) => {
+          const isDragging = dragIndex === exIndex;
+          const isOver = overIndex === exIndex && dragIndex !== null && dragIndex !== exIndex;
 
-            {/* Sets table */}
-            <div className="p-4 space-y-2">
-              {/* Column headers */}
-              <div className="grid grid-cols-[40px_1fr_1fr_40px] gap-2 text-[10px] uppercase tracking-widest text-neutral-strong/40 font-bold px-1">
-                <div className="text-center">Set</div>
-                <div className="text-center">Weight (kg)</div>
-                <div className="text-center">Reps</div>
-                <div />
-              </div>
+          return (
+            <div
+              key={exercise.id}
+              ref={(el) => (cardRefs.current[exIndex] = el)}
+              className={`transition-all duration-150 ${
+                isDragging ? "opacity-40 scale-[0.97]" : ""
+              } ${isOver ? "translate-y-0" : ""}`}
+            >
+              {/* Drop indicator line */}
+              {isOver && dragIndex !== null && dragIndex > exIndex && (
+                <div className="h-1 bg-primary rounded-full mb-2 shadow-[0_0_8px_rgba(187,255,0,0.5)]" />
+              )}
 
-              {/* Set rows */}
-              {exercise.sets.map((set, index) => (
-                <div
-                  key={set.id}
-                  className="grid grid-cols-[40px_1fr_1fr_40px] gap-2 items-center bg-white/5 rounded-lg p-2"
-                >
-                  <div className="text-center font-bold text-neutral-soft text-sm">
-                    {index + 1}
+              <Card>
+                {/* Exercise header */}
+                <div className="p-4 flex items-center gap-2 border-b border-white/5">
+                  {/* Drag handle */}
+                  <div
+                    onMouseDown={(e) => handleDragStart(e, exIndex)}
+                    onTouchStart={(e) => handleDragStart(e, exIndex)}
+                    className="w-8 h-8 rounded-lg flex items-center justify-center text-neutral-soft/50 hover:text-neutral-soft hover:bg-white/5 cursor-grab active:cursor-grabbing transition-colors touch-none select-none shrink-0"
+                  >
+                    <Icon name="drag_indicator" className="text-lg" />
                   </div>
 
-                  <input
-                    type="number"
-                    inputMode="decimal"
-                    value={set.targetWeight || ""}
-                    onChange={(e) =>
-                      updateSet(
-                        exercise.id,
-                        set.id,
-                        "targetWeight",
-                        parseFloat(e.target.value) || 0
-                      )
-                    }
-                    placeholder="0"
-                    className="w-full bg-white/5 border border-white/10 rounded text-center py-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-bold text-neutral-strong"
-                  />
-
-                  <input
-                    type="number"
-                    inputMode="numeric"
-                    value={set.targetReps || ""}
-                    onChange={(e) =>
-                      updateSet(
-                        exercise.id,
-                        set.id,
-                        "targetReps",
-                        parseInt(e.target.value) || 0
-                      )
-                    }
-                    placeholder="0"
-                    className="w-full bg-white/5 border border-white/10 rounded text-center py-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-bold text-neutral-strong"
-                  />
+                  <span className="text-xl">{exercise.icon}</span>
+                  <h3 className="text-lg font-bold flex-1 min-w-0 truncate">
+                    {exercise.name}
+                  </h3>
 
                   <button
-                    onClick={() => removeSet(exercise.id, set.id)}
-                    disabled={exercise.sets.length <= 1}
-                    className="w-8 h-8 rounded flex items-center justify-center text-neutral-soft hover:text-red-400 transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
+                    onClick={() => removeExercise(exercise.id)}
+                    className="w-8 h-8 rounded-lg flex items-center justify-center text-neutral-soft hover:text-red-400 hover:bg-red-400/10 transition-colors shrink-0"
                   >
-                    <Icon name="close" className="text-sm" />
+                    <Icon name="delete" className="text-lg" />
                   </button>
                 </div>
-              ))}
 
-              {/* Add set */}
-              <button
-                onClick={() => addSet(exercise.id)}
-                className="w-full py-2 flex items-center justify-center gap-2 text-sm font-medium text-neutral-strong/60 hover:text-primary transition-colors mt-1"
-              >
-                <Icon name="add" className="text-sm" />
-                Add Set
-              </button>
+                {/* Sets table */}
+                <div className="p-4 space-y-2">
+                  {/* Column headers */}
+                  <div className="grid grid-cols-[40px_1fr_1fr_40px] gap-2 text-[10px] uppercase tracking-widest text-neutral-strong/40 font-bold px-1">
+                    <div className="text-center">Set</div>
+                    <div className="text-center">Weight (kg)</div>
+                    <div className="text-center">Reps</div>
+                    <div />
+                  </div>
+
+                  {/* Set rows */}
+                  {exercise.sets.map((set, index) => (
+                    <div
+                      key={set.id}
+                      className="grid grid-cols-[40px_1fr_1fr_40px] gap-2 items-center bg-white/5 rounded-lg p-2"
+                    >
+                      <div className="text-center font-bold text-neutral-soft text-sm">
+                        {index + 1}
+                      </div>
+
+                      <input
+                        type="number"
+                        inputMode="decimal"
+                        value={set.targetWeight || ""}
+                        onChange={(e) =>
+                          updateSet(
+                            exercise.id,
+                            set.id,
+                            "targetWeight",
+                            parseFloat(e.target.value) || 0
+                          )
+                        }
+                        placeholder="0"
+                        className="w-full bg-white/5 border border-white/10 rounded text-center py-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-bold text-neutral-strong"
+                      />
+
+                      <input
+                        type="number"
+                        inputMode="numeric"
+                        value={set.targetReps || ""}
+                        onChange={(e) =>
+                          updateSet(
+                            exercise.id,
+                            set.id,
+                            "targetReps",
+                            parseInt(e.target.value) || 0
+                          )
+                        }
+                        placeholder="0"
+                        className="w-full bg-white/5 border border-white/10 rounded text-center py-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-bold text-neutral-strong"
+                      />
+
+                      <button
+                        onClick={() => removeSet(exercise.id, set.id)}
+                        disabled={exercise.sets.length <= 1}
+                        className="w-8 h-8 rounded flex items-center justify-center text-neutral-soft hover:text-red-400 transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
+                      >
+                        <Icon name="close" className="text-sm" />
+                      </button>
+                    </div>
+                  ))}
+
+                  {/* Add set */}
+                  <button
+                    onClick={() => addSet(exercise.id)}
+                    className="w-full py-2 flex items-center justify-center gap-2 text-sm font-medium text-neutral-strong/60 hover:text-primary transition-colors mt-1"
+                  >
+                    <Icon name="add" className="text-sm" />
+                    Add Set
+                  </button>
+                </div>
+              </Card>
+
+              {/* Drop indicator line (below) */}
+              {isOver && dragIndex !== null && dragIndex < exIndex && (
+                <div className="h-1 bg-primary rounded-full mt-2 shadow-[0_0_8px_rgba(187,255,0,0.5)]" />
+              )}
             </div>
-          </Card>
-        ))}
+          );
+        })}
 
         {/* Add exercise */}
         <button
