@@ -6,7 +6,7 @@ import Icon from "../components/Icon";
 import BodyHeatmap from "../components/BodyHeatmap";
 
 export default function Progress() {
-  const { logs } = useWorkoutLog();
+  const { logs, loading } = useWorkoutLog();
   const { exercises } = useExerciseLibrary();
 
   // 1. Map exercise names → primary/secondary muscles
@@ -124,6 +124,14 @@ export default function Progress() {
     }
     return flags;
   }, [logs, exerciseMuscleMap, musclePoints]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-24">
+        <div className="w-8 h-8 border-3 border-primary/30 border-t-primary rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 px-4 pt-4 pb-6">

@@ -4,128 +4,93 @@ import { supabase } from "../lib/supabase";
 
 const WorkoutContext = createContext(null);
 
-function readFromStorage(key) {
-  try {
-    const stored = localStorage.getItem(key);
-    return stored ? JSON.parse(stored) : [];
-  } catch {
-    return [];
-  }
-}
-
-function writeToStorage(key, data) {
-  try {
-    localStorage.setItem(key, JSON.stringify(data));
-  } catch {
-    // storage full or unavailable
-  }
-}
-
 export function WorkoutProvider({ children }) {
-  const { currentUser } = useUser();
-  const storageKey = `gym-app-${currentUser}-workout-templates`;
+  const { profileId } = useUser();
 
-  const [templates, setTemplates] = useState(() => readFromStorage(storageKey));
+  const [templates, setTemplates] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Sync local state to localStorage
+  // Fetch templates from Supabase when profileId is available
   useEffect(() => {
-    writeToStorage(storageKey, templates);
-  }, [templates, storageKey]);
-
-  // Fetch from Supabase on mount, merge with local
-  useEffect(() => {
-    if (!currentUser) return;
+    if (!profileId) {
+      setTemplates([]);
+      setLoading(false);
+      return;
+    }
+    let cancelled = false;
     (async () => {
+      setLoading(true);
       try {
         const { data, error } = await supabase
           .from("workout_templates")
           .select("*")
-          .eq("username", currentUser)
+          .eq("profile_id", profileId)
           .order("created_at", { ascending: true });
-        if (!error && data && data.length > 0) {
-          const remote = data.map((row) => ({
-            id: row.id,
-            name: row.name,
-            icon: row.icon,
-            exercises: row.exercises || [],
-          }));
-          // Merge: use remote as source of truth, but keep any local-only entries
-          const remoteIds = new Set(remote.map((t) => t.id));
-          const localOnly = readFromStorage(storageKey).filter(
-            (t) => !remoteIds.has(t.id)
+        if (!cancelled && !error) {
+          setTemplates(
+            (data || []).map((row) => ({
+              id: row.id,
+              name: row.name,
+              icon: row.icon,
+              exercises: row.exercises || [],
+            }))
           );
-          const merged = [...remote, ...localOnly];
-          setTemplates(merged);
-          writeToStorage(storageKey, merged);
-          // Push any local-only items to Supabase
-          for (const t of localOnly) {
-            supabase
-              .from("workout_templates")
-              .upsert({
-                id: t.id,
-                username: currentUser,
-                name: t.name,
-                icon: t.icon,
-                exercises: t.exercises,
-              })
-              .then(() => {});
-          }
         }
       } catch {
-        // offline — use local data
+        // network error — templates stay empty
       }
+      if (!cancelled) setLoading(false);
     })();
-  }, [currentUser, storageKey]);
+    return () => { cancelled = true; };
+  }, [profileId]);
 
   const addTemplate = useCallback(
-    (template) => {
+    async (template) => {
       const id = crypto.randomUUID();
       const newTemplate = { ...template, id, exercises: [] };
+      // Optimistic local update
       setTemplates((prev) => [...prev, newTemplate]);
-      // Fire-and-forget Supabase insert
-      supabase
-        .from("workout_templates")
-        .insert({
-          id,
-          username: currentUser,
-          name: template.name,
-          icon: template.icon,
-          exercises: [],
-        })
-        .then(() => {});
+      // Persist to Supabase
+      const { error } = await supabase.from("workout_templates").insert({
+        id,
+        profile_id: profileId,
+        name: template.name,
+        icon: template.icon,
+        exercises: [],
+      });
+      if (error) {
+        // Rollback on failure
+        setTemplates((prev) => prev.filter((t) => t.id !== id));
+      }
       return id;
     },
-    [currentUser]
+    [profileId]
   );
 
   const updateTemplate = useCallback(
-    (id, updates) => {
+    async (id, updates) => {
+      // Optimistic local update
       setTemplates((prev) =>
         prev.map((t) => (t.id === id ? { ...t, ...updates } : t))
       );
-      // Fire-and-forget Supabase update
+      // Persist to Supabase
       const patch = {};
       if (updates.name !== undefined) patch.name = updates.name;
       if (updates.icon !== undefined) patch.icon = updates.icon;
       if (updates.exercises !== undefined) patch.exercises = updates.exercises;
       if (Object.keys(patch).length > 0) {
-        supabase
-          .from("workout_templates")
-          .update(patch)
-          .eq("id", id)
-          .then(() => {});
+        await supabase.from("workout_templates").update(patch).eq("id", id);
       }
     },
-    [currentUser]
+    [profileId]
   );
 
   const deleteTemplate = useCallback(
-    (id) => {
+    async (id) => {
       setTemplates((prev) => prev.filter((t) => t.id !== id));
-      // Fire-and-forget Supabase delete
-      supabase.from("workout_templates").delete().eq("id", id).then(() => {});
+      await supabase.from("workout_templates").delete().eq("id", id);
     },
-    [currentUser]
+    [profileId]
   );
 
   const getTemplate = useCallback(
@@ -135,6 +100,7 @@ export function WorkoutProvider({ children }) {
 
   const value = {
     templates,
+    loading,
     addTemplate,
     updateTemplate,
     deleteTemplate,

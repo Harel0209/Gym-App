@@ -4,23 +4,6 @@ import { supabase } from "../lib/supabase";
 
 const WorkoutLogContext = createContext(null);
 
-function readFromStorage(key) {
-  try {
-    const stored = localStorage.getItem(key);
-    return stored ? JSON.parse(stored) : [];
-  } catch {
-    return [];
-  }
-}
-
-function writeToStorage(key, data) {
-  try {
-    localStorage.setItem(key, JSON.stringify(data));
-  } catch {
-    // storage full or unavailable
-  }
-}
-
 // Convert Supabase row (snake_case) → local log shape (camelCase)
 function fromSupabaseRow(row) {
   return {
@@ -35,10 +18,10 @@ function fromSupabaseRow(row) {
 }
 
 // Convert local log shape → Supabase row
-function toSupabaseRow(log, username) {
+function toSupabaseRow(log, profileId) {
   return {
     id: log.id,
-    username,
+    profile_id: profileId,
     date: log.date,
     template_id: log.templateId,
     template_name: log.templateName,
@@ -49,69 +32,60 @@ function toSupabaseRow(log, username) {
 }
 
 export function WorkoutLogProvider({ children }) {
-  const { currentUser } = useUser();
-  const storageKey = `gym-app-${currentUser}-workout-log`;
+  const { profileId } = useUser();
 
-  const [logs, setLogs] = useState(() => readFromStorage(storageKey));
+  const [logs, setLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Sync to localStorage
+  // Fetch logs from Supabase when profileId is available
   useEffect(() => {
-    writeToStorage(storageKey, logs);
-  }, [logs, storageKey]);
-
-  // Fetch from Supabase on mount, merge
-  useEffect(() => {
-    if (!currentUser) return;
+    if (!profileId) {
+      setLogs([]);
+      setLoading(false);
+      return;
+    }
+    let cancelled = false;
     (async () => {
+      setLoading(true);
       try {
         const { data, error } = await supabase
           .from("workout_logs")
           .select("*")
-          .eq("username", currentUser)
+          .eq("profile_id", profileId)
           .order("date", { ascending: false });
-        if (!error && data && data.length > 0) {
-          const remote = data.map(fromSupabaseRow);
-          const remoteIds = new Set(remote.map((l) => l.id));
-          const localOnly = readFromStorage(storageKey).filter(
-            (l) => !remoteIds.has(l.id)
-          );
-          const merged = [...localOnly, ...remote].sort(
-            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-          );
-          setLogs(merged);
-          writeToStorage(storageKey, merged);
-          // Push local-only logs to Supabase
-          for (const l of localOnly) {
-            supabase
-              .from("workout_logs")
-              .upsert(toSupabaseRow(l, currentUser))
-              .then(() => {});
-          }
+        if (!cancelled && !error) {
+          setLogs((data || []).map(fromSupabaseRow));
         }
       } catch {
-        // offline — use local
+        // network error — logs stay empty
       }
+      if (!cancelled) setLoading(false);
     })();
-  }, [currentUser, storageKey]);
+    return () => { cancelled = true; };
+  }, [profileId]);
 
   const addLog = useCallback(
-    (logData) => {
+    async (logData) => {
       const log = {
         ...logData,
         id: crypto.randomUUID(),
         date: new Date().toISOString(),
       };
+      // Optimistic local update
       setLogs((prev) => [log, ...prev]);
-      // Fire-and-forget Supabase insert
-      supabase
+      // Persist to Supabase
+      const { error } = await supabase
         .from("workout_logs")
-        .insert(toSupabaseRow(log, currentUser))
-        .then(() => {});
+        .insert(toSupabaseRow(log, profileId));
+      if (error) {
+        // Rollback on failure
+        setLogs((prev) => prev.filter((l) => l.id !== log.id));
+      }
     },
-    [currentUser]
+    [profileId]
   );
 
-  const value = { logs, addLog };
+  const value = { logs, loading, addLog };
 
   return (
     <WorkoutLogContext.Provider value={value}>

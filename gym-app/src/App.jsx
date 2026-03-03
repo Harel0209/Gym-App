@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { EquipmentProvider } from "./context/EquipmentContext";
 import { ExerciseLibraryProvider } from "./context/ExerciseLibraryContext";
@@ -12,7 +12,6 @@ import Planner from "./pages/Planner";
 import WorkoutEditor from "./pages/WorkoutEditor";
 import Workout from "./pages/Workout";
 import Progress from "./pages/Progress";
-import Library from "./pages/Library";
 
 export default function App() {
   const { currentUser } = useUser();
@@ -24,12 +23,11 @@ export default function App() {
       <ExerciseLibraryProvider>
         <WorkoutProvider>
           <WorkoutLogProvider>
-            <BrowserRouter>
+            <HashRouter>
               <Routes>
                 <Route element={<Layout />}>
                   <Route index element={<Home />} />
                   <Route path="equipment" element={<Equipment />} />
-                  <Route path="library" element={<Library />} />
                   <Route path="planner" element={<Planner />} />
                   <Route path="planner/:id" element={<WorkoutEditor />} />
                   <Route path="workout/:templateId" element={<Workout />} />
@@ -37,7 +35,7 @@ export default function App() {
                   <Route path="progress" element={<Progress />} />
                 </Route>
               </Routes>
-            </BrowserRouter>
+            </HashRouter>
           </WorkoutLogProvider>
         </WorkoutProvider>
       </ExerciseLibraryProvider>

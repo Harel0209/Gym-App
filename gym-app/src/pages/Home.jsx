@@ -26,10 +26,18 @@ function formatDuration(ms) {
   return `${hrs}h ${rem}m`;
 }
 
+function LoadingSpinner() {
+  return (
+    <div className="flex items-center justify-center py-12">
+      <div className="w-8 h-8 border-3 border-primary/30 border-t-primary rounded-full animate-spin" />
+    </div>
+  );
+}
+
 export default function Home() {
   const { currentUser } = useUser();
-  const { templates } = useWorkoutTemplates();
-  const { logs } = useWorkoutLog();
+  const { templates, loading: templatesLoading } = useWorkoutTemplates();
+  const { logs, loading: logsLoading } = useWorkoutLog();
 
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
@@ -56,29 +64,33 @@ export default function Home() {
       </div>
 
       {/* Stats */}
-      <div className="px-4 grid grid-cols-2 gap-4">
-        <StatCard
-          icon="fitness_center"
-          label="Total Workouts"
-          value={logs.length}
-          footnote={
-            logs.length > 0
-              ? `Last: ${timeAgo(logs[0].date)}`
-              : "No workouts yet"
-          }
-          footnoteColor={logs.length > 0 ? "text-primary" : "text-neutral-soft"}
-        />
-        <StatCard
-          icon="check_circle"
-          label="Total Sets Done"
-          value={totalSets}
-          footnote={
-            logs.length > 0
-              ? `Across ${logs.length} session${logs.length !== 1 ? "s" : ""}`
-              : "Start your first workout"
-          }
-        />
-      </div>
+      {logsLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <div className="px-4 grid grid-cols-2 gap-4">
+          <StatCard
+            icon="fitness_center"
+            label="Total Workouts"
+            value={logs.length}
+            footnote={
+              logs.length > 0
+                ? `Last: ${timeAgo(logs[0].date)}`
+                : "No workouts yet"
+            }
+            footnoteColor={logs.length > 0 ? "text-primary" : "text-neutral-soft"}
+          />
+          <StatCard
+            icon="check_circle"
+            label="Total Sets Done"
+            value={totalSets}
+            footnote={
+              logs.length > 0
+                ? `Across ${logs.length} session${logs.length !== 1 ? "s" : ""}`
+                : "Start your first workout"
+            }
+          />
+        </div>
+      )}
 
       {/* Today's Workout — pick a template */}
       <div className="px-4">
@@ -86,7 +98,9 @@ export default function Home() {
           Today&apos;s Workout
         </h3>
 
-        {templates.length === 0 ? (
+        {templatesLoading ? (
+          <LoadingSpinner />
+        ) : templates.length === 0 ? (
           <div className="text-center py-8 bg-neutral-soft/5 rounded-xl border border-neutral-soft/10">
             <Icon
               name="calendar_today"

@@ -6,17 +6,17 @@ import Icon from "../components/Icon";
 import EmojiPicker from "../components/EmojiPicker";
 
 export default function Planner() {
-  const { templates, addTemplate, deleteTemplate } = useWorkoutTemplates();
+  const { templates, loading, addTemplate, deleteTemplate } = useWorkoutTemplates();
   const navigate = useNavigate();
 
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newName, setNewName] = useState("");
   const [newIcon, setNewIcon] = useState("\u{1F4AA}");
 
-  const handleCreate = (e) => {
+  const handleCreate = async (e) => {
     e.preventDefault();
     if (!newName.trim()) return;
-    const id = addTemplate({ name: newName.trim(), icon: newIcon });
+    const id = await addTemplate({ name: newName.trim(), icon: newIcon });
     setNewName("");
     setNewIcon("\u{1F4AA}");
     setShowCreateForm(false);
@@ -83,8 +83,15 @@ export default function Planner() {
         </Card>
       )}
 
+      {/* Loading state */}
+      {loading && (
+        <div className="flex items-center justify-center py-12">
+          <div className="w-8 h-8 border-3 border-primary/30 border-t-primary rounded-full animate-spin" />
+        </div>
+      )}
+
       {/* Template list */}
-      <div className="space-y-3 pb-6">
+      {!loading && <div className="space-y-3 pb-6">
         {templates.map((t) => (
           <Card key={t.id}>
             <div className="flex items-center gap-3 p-4">
@@ -117,10 +124,10 @@ export default function Planner() {
             </div>
           </Card>
         ))}
-      </div>
+      </div>}
 
       {/* Empty state */}
-      {templates.length === 0 && !showCreateForm && (
+      {!loading && templates.length === 0 && !showCreateForm && (
         <div className="text-center py-12">
           <Icon
             name="calendar_today"

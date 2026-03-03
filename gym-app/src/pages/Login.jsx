@@ -105,14 +105,14 @@ export default function Login() {
           <div className="space-y-2">
             {profiles.map((p) => (
               <button
-                key={p}
+                key={p.id}
                 onClick={() => selectProfile(p)}
                 className="w-full flex items-center gap-3 p-3 rounded-xl bg-neutral-soft/5 border border-neutral-soft/10 hover:border-primary/30 transition-colors text-left"
               >
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg">
-                  {p[0].toUpperCase()}
+                  {p.username[0].toUpperCase()}
                 </div>
-                <span className="font-bold text-sm">{p}</span>
+                <span className="font-bold text-sm">{p.username}</span>
                 <Icon
                   name="chevron_right"
                   className="text-neutral-soft ml-auto"

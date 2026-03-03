@@ -4,7 +4,6 @@ import Icon from "./Icon";
 
 const NAV_ITEMS = [
   { to: "/", icon: "home", label: "Home" },
-  { to: "/library", icon: "menu_book", label: "Library" },
   { to: "/planner", icon: "calendar_today", label: "Planner" },
   { to: "/progress", icon: "monitoring", label: "Progress" },
 ];

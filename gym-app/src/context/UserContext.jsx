@@ -1,8 +1,9 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { supabase } from "../lib/supabase";
 
 const UserContext = createContext(null);
 const CURRENT_USER_KEY = "gym-app-current-user";
+const PROFILE_ID_KEY = "gym-app-profile-id";
 
 function readCurrentUser() {
   try {
@@ -12,23 +13,52 @@ function readCurrentUser() {
   }
 }
 
+function readProfileId() {
+  try {
+    return localStorage.getItem(PROFILE_ID_KEY) || null;
+  } catch {
+    return null;
+  }
+}
+
 export function UserProvider({ children }) {
   const [profiles, setProfiles] = useState([]);
   const [currentUser, setCurrentUser] = useState(readCurrentUser);
+  const [profileId, setProfileId] = useState(readProfileId);
   const [loading, setLoading] = useState(false);
 
-  // Fetch profiles from Supabase (called on mount from Login)
+  // On mount, if we have a cached username but no profileId, resolve it
+  useEffect(() => {
+    if (currentUser && !profileId) {
+      (async () => {
+        try {
+          const { data } = await supabase
+            .from("profiles")
+            .select("id")
+            .eq("username", currentUser)
+            .single();
+          if (data) {
+            setProfileId(data.id);
+            localStorage.setItem(PROFILE_ID_KEY, data.id);
+          }
+        } catch {
+          // offline — will resolve on next fetch
+        }
+      })();
+    }
+  }, [currentUser, profileId]);
+
   const fetchProfiles = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from("profiles")
-        .select("username")
+        .select("id, username")
         .order("created_at", { ascending: true });
       if (!error && data) {
-        setProfiles(data.map((row) => row.username));
+        setProfiles(data);
       }
     } catch {
-      // offline — profiles list stays empty until online
+      // offline
     }
   }, []);
 
@@ -38,9 +68,11 @@ export function UserProvider({ children }) {
 
     setLoading(true);
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("profiles")
-        .insert({ username: trimmed });
+        .insert({ username: trimmed })
+        .select("id, username")
+        .single();
 
       if (error) {
         setLoading(false);
@@ -48,9 +80,11 @@ export function UserProvider({ children }) {
         return "error";
       }
 
-      setProfiles((prev) => [...prev, trimmed]);
-      setCurrentUser(trimmed);
-      localStorage.setItem(CURRENT_USER_KEY, trimmed);
+      setProfiles((prev) => [...prev, data]);
+      setCurrentUser(data.username);
+      setProfileId(data.id);
+      localStorage.setItem(CURRENT_USER_KEY, data.username);
+      localStorage.setItem(PROFILE_ID_KEY, data.id);
       setLoading(false);
       return "ok";
     } catch {
@@ -59,20 +93,25 @@ export function UserProvider({ children }) {
     }
   }, []);
 
-  const selectProfile = useCallback((name) => {
-    setCurrentUser(name);
-    localStorage.setItem(CURRENT_USER_KEY, name);
+  const selectProfile = useCallback((profile) => {
+    setCurrentUser(profile.username);
+    setProfileId(profile.id);
+    localStorage.setItem(CURRENT_USER_KEY, profile.username);
+    localStorage.setItem(PROFILE_ID_KEY, profile.id);
   }, []);
 
   const logout = useCallback(() => {
     setCurrentUser(null);
+    setProfileId(null);
     localStorage.removeItem(CURRENT_USER_KEY);
+    localStorage.removeItem(PROFILE_ID_KEY);
   }, []);
 
   return (
     <UserContext.Provider
       value={{
         currentUser,
+        profileId,
         profiles,
         loading,
         createProfile,
