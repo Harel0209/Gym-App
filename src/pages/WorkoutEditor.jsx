@@ -132,6 +132,15 @@ export default function WorkoutEditor() {
     }));
   };
 
+  const moveExercise = (index, direction) => {
+    setTemplate((prev) => {
+      const next = [...prev.exercises];
+      const target = direction === "up" ? index - 1 : index + 1;
+      [next[index], next[target]] = [next[target], next[index]];
+      return { ...prev, exercises: next };
+    });
+  };
+
   // ── Set operations ──
   const addSet = (exerciseId) => {
     setTemplate((prev) => ({
@@ -281,6 +290,20 @@ export default function WorkoutEditor() {
                     {exercise.name}
                   </h3>
 
+                  <button
+                    onClick={() => moveExercise(exIndex, "up")}
+                    disabled={exIndex === 0}
+                    className="w-8 h-8 rounded-lg flex items-center justify-center text-neutral-soft hover:text-primary hover:bg-primary/10 transition-colors disabled:opacity-20 disabled:cursor-not-allowed shrink-0"
+                  >
+                    <Icon name="keyboard_arrow_up" className="text-lg" />
+                  </button>
+                  <button
+                    onClick={() => moveExercise(exIndex, "down")}
+                    disabled={exIndex === template.exercises.length - 1}
+                    className="w-8 h-8 rounded-lg flex items-center justify-center text-neutral-soft hover:text-primary hover:bg-primary/10 transition-colors disabled:opacity-20 disabled:cursor-not-allowed shrink-0"
+                  >
+                    <Icon name="keyboard_arrow_down" className="text-lg" />
+                  </button>
                   <button
                     onClick={() => removeExercise(exercise.id)}
                     className="w-8 h-8 rounded-lg flex items-center justify-center text-neutral-soft hover:text-red-400 hover:bg-red-400/10 transition-colors shrink-0"
