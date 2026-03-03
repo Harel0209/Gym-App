@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html class="dark" dir="rtl" lang="he"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#bcff00",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#061414",
+                        "surface-dark": "#0c1f1f",
+                        "text-main": "#e9ebe6",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: #061414;
+            color: #e9ebe6;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-text-main min-h-screen flex flex-col font-display">
+<!-- Header Section -->
+<header class="sticky top-0 z-50 bg-background-dark/80 backdrop-blur-md border-b border-primary/10 px-4 py-4 flex items-center justify-between">
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-text-main">arrow_forward</span>
+</button>
+<h1 class="text-xl font-bold tracking-tight">גוף עליון</h1>
+<button class="bg-primary text-background-dark px-5 py-1.5 rounded-full text-sm font-bold hover:opacity-90 transition-opacity">
+            סיום
+        </button>
+</header>
+<!-- Workout Progress -->
+<div class="px-6 py-4">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-medium text-text-main/60">התקדמות אימון</span>
+<span class="text-sm font-bold text-primary">3/8 תרגילים</span>
+</div>
+<div class="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 37.5%"></div>
+</div>
+</div>
+<main class="flex-1 px-4 pb-32 space-y-6">
+<!-- Exercise Card 1 -->
+<section class="bg-surface-dark rounded-xl border border-white/5 overflow-hidden shadow-xl">
+<div class="p-4 flex justify-between items-center border-b border-white/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">fitness_center</span>
+<h2 class="text-lg font-bold">לחיצת חזה (Dumbbell)</h2>
+</div>
+<button class="text-primary/80 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="p-4 space-y-4">
+<!-- Column Labels -->
+<div class="grid grid-cols-4 gap-2 text-[10px] uppercase tracking-widest text-text-main/40 font-bold px-2">
+<div class="text-center">סט</div>
+<div class="text-center">משקל (ק"ג)</div>
+<div class="text-center">חזרות</div>
+<div class="text-center">בוצע</div>
+</div>
+<!-- Set Row 1 (Completed) -->
+<div class="grid grid-cols-4 gap-2 items-center bg-white/5 rounded-lg p-2 transition-all">
+<div class="text-center font-medium text-text-main/60">1</div>
+<input class="bg-transparent border-none text-center focus:ring-0 text-text-main/40 line-through" placeholder="40" readonly="" type="number"/>
+<input class="bg-transparent border-none text-center focus:ring-0 text-text-main/40 line-through" placeholder="10" readonly="" type="number"/>
+<div class="flex justify-center">
+<div class="size-6 rounded bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-background-dark text-sm font-bold">check</span>
+</div>
+</div>
+</div>
+<!-- Set Row 2 (Current) -->
+<div class="grid grid-cols-4 gap-2 items-center bg-primary/10 border border-primary/30 rounded-lg p-2 transition-all">
+<div class="text-center font-bold text-primary">2</div>
+<div class="relative">
+<input class="w-full bg-white/5 border border-white/10 rounded text-center py-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-bold" type="number" value="40"/>
+</div>
+<div class="relative">
+<input class="w-full bg-white/5 border border-white/10 rounded text-center py-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-bold" placeholder="-" type="number"/>
+</div>
+<div class="flex justify-center">
+<button class="size-6 rounded border-2 border-primary/30 hover:border-primary transition-colors"></button>
+</div>
+</div>
+<!-- Set Row 3 -->
+<div class="grid grid-cols-4 gap-2 items-center bg-white/5 rounded-lg p-2 opacity-50">
+<div class="text-center font-medium">3</div>
+<input class="bg-transparent border-none text-center focus:ring-0" placeholder="-" type="number"/>
+<input class="bg-transparent border-none text-center focus:ring-0" placeholder="-" type="number"/>
+<div class="flex justify-center">
+<button class="size-6 rounded border-2 border-white/10"></button>
+</div>
+</div>
+<button class="w-full py-2 flex items-center justify-center gap-2 text-sm font-medium text-text-main/60 hover:text-primary transition-colors mt-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                    הוסף סט
+                </button>
+</div>
+</section>
+<!-- Exercise Card 2 -->
+<section class="bg-surface-dark rounded-xl border border-white/5 overflow-hidden shadow-xl">
+<div class="p-4 flex justify-between items-center border-b border-white/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">exercise</span>
+<h2 class="text-lg font-bold">חתירה במכונה</h2>
+</div>
+<button class="text-primary/80 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="p-4 space-y-4">
+<div class="grid grid-cols-4 gap-2 text-[10px] uppercase tracking-widest text-text-main/40 font-bold px-2">
+<div class="text-center">סט</div>
+<div class="text-center">משקל (ק"ג)</div>
+<div class="text-center">חזרות</div>
+<div class="text-center">בוצע</div>
+</div>
+<div class="grid grid-cols-4 gap-2 items-center bg-white/5 rounded-lg p-2">
+<div class="text-center font-medium">1</div>
+<input class="w-full bg-white/5 border border-white/10 rounded text-center py-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-bold" placeholder="-" type="number"/>
+<input class="w-full bg-white/5 border border-white/10 rounded text-center py-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-bold" placeholder="-" type="number"/>
+<div class="flex justify-center">
+<button class="size-6 rounded border-2 border-white/10"></button>
+</div>
+</div>
+<button class="w-full py-2 flex items-center justify-center gap-2 text-sm font-medium text-text-main/60 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+                    הוסף סט
+                </button>
+</div>
+</section>
+<!-- Add Exercise Button -->
+<button class="w-full py-4 rounded-xl border-2 border-dashed border-white/10 flex flex-col items-center justify-center gap-2 text-text-main/40 hover:text-primary hover:border-primary/40 transition-all">
+<span class="material-symbols-outlined text-3xl">add_circle</span>
+<span class="font-bold">הוסף תרגיל חדש</span>
+</button>
+</main>
+<!-- Bottom Navigation Bar (Modified from Template) -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-background-dark/95 backdrop-blur-xl border-t border-white/5 pb-8 pt-3 px-6">
+<div class="flex justify-between items-center max-w-md mx-auto">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined font-variation-fill-1">fitness_center</span>
+<span class="text-[10px] font-bold">אימונים</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-text-main/40 hover:text-text-main transition-colors" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-[10px] font-bold">תוכניות</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-text-main/40 hover:text-text-main transition-colors" href="#">
+<span class="material-symbols-outlined">show_chart</span>
+<span class="text-[10px] font-bold">סטטיסטיקה</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-text-main/40 hover:text-text-main transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold">פרופיל</span>
+</a>
+</div>
+</nav>
+<!-- FAB Overlay for Finish (Optional visual flare) -->
+<div class="fixed bottom-24 left-6 z-40">
+<button class="size-14 rounded-full bg-primary text-background-dark shadow-2xl shadow-primary/20 flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined font-bold">play_arrow</span>
+</button>
+</div>
+</body></html>

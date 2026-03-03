@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+/* ── Design Tokens (extracted from HTML mockups) ── */
+@theme {
+  /* Primary accent — neon lime green */
+  --color-primary: #bbff00;
+
+  /* Backgrounds */
+  --color-bg-dark: #061414;
+  --color-bg-light: #f8f8f5;
+  --color-surface-dark: #0c1f1f;
+
+  /* Neutral text palette */
+  --color-neutral-strong: #e9ebe6;
+  --color-neutral-med: #d2d3ce;
+  --color-neutral-soft: #96998c;
+
+  /* Typography */
+  --font-display: "Lexend", sans-serif;
+}
+
+/* ── Base styles ── */
+body {
+  font-family: var(--font-display);
+  background-color: var(--color-bg-dark);
+  color: var(--color-neutral-strong);
+  min-height: 100dvh;
+}
+
+/* Material Symbols baseline settings */
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+/* Icon with fill variant */
+.icon-filled {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+/* Hide scrollbars but keep scrolling */
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.custom-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Remove number input spinners */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Bottom sheet slide-up animation */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.animate-slide-up {
+  animation: slide-up 0.25s ease-out;
+}

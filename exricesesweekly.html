@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html class="dark" dir="rtl" lang="he"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#bbff00",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#061414",
+                        "neutral-strong": "#e9ebe6",
+                        "neutral-med": "#d2d3ce",
+                        "neutral-soft": "#96998c",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .custom-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-neutral-strong min-h-screen flex flex-col">
+<!-- Header -->
+<header class="flex items-center justify-between p-4 bg-background-dark/50 backdrop-blur-md sticky top-0 z-50 border-b border-neutral-soft/20">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-neutral-soft/10">
+<span class="material-symbols-outlined text-neutral-strong">arrow_forward</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight">מעקב התקדמות שרירים</h1>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-neutral-soft/10">
+<span class="material-symbols-outlined text-neutral-strong">more_vert</span>
+</button>
+</header>
+<main class="flex-1 overflow-y-auto pb-24">
+<!-- Muscle Selector -->
+<div class="p-4">
+<div class="flex gap-3 overflow-x-auto custom-scrollbar pb-2">
+<button class="flex flex-col items-center justify-center min-w-[80px] h-24 rounded-xl bg-primary text-background-dark shadow-lg shadow-primary/20 transition-all">
+<span class="material-symbols-outlined text-3xl mb-1">fitness_center</span>
+<span class="text-xs font-bold">חזה</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[80px] h-24 rounded-xl bg-neutral-soft/10 border border-neutral-soft/20 text-neutral-med hover:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-3xl mb-1">accessibility_new</span>
+<span class="text-xs font-medium">גב</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[80px] h-24 rounded-xl bg-neutral-soft/10 border border-neutral-soft/20 text-neutral-med hover:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-3xl mb-1">directions_run</span>
+<span class="text-xs font-medium">רגליים</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[80px] h-24 rounded-xl bg-neutral-soft/10 border border-neutral-soft/20 text-neutral-med hover:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-3xl mb-1">exercise</span>
+<span class="text-xs font-medium">כתפיים</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[80px] h-24 rounded-xl bg-neutral-soft/10 border border-neutral-soft/20 text-neutral-med hover:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-3xl mb-1">humerus</span>
+<span class="text-xs font-medium">זרועות</span>
+</button>
+</div>
+</div>
+<!-- Metric Toggle -->
+<div class="px-4 py-2">
+<div class="flex bg-neutral-soft/10 p-1 rounded-lg">
+<button class="flex-1 py-2 text-sm font-bold rounded-md bg-background-dark text-primary shadow-sm">נפח (ק״ג)</button>
+<button class="flex-1 py-2 text-sm font-medium text-neutral-soft hover:text-neutral-med transition-colors">כוח (RM1)</button>
+</div>
+</div>
+<!-- Graph Section -->
+<div class="px-4 py-6">
+<div class="bg-neutral-soft/5 border border-neutral-soft/10 rounded-2xl p-4">
+<div class="flex justify-between items-end mb-6">
+<div>
+<p class="text-neutral-soft text-sm mb-1">סה״כ נפח שבועי</p>
+<h2 class="text-3xl font-bold text-neutral-strong tracking-tight">12,450 <span class="text-lg text-neutral-soft font-normal">ק״ג</span></h2>
+</div>
+<div class="flex items-center text-primary bg-primary/10 px-2 py-1 rounded-full text-xs font-bold">
+<span class="material-symbols-outlined text-xs mr-1">trending_up</span>
+                        12.5%+
+                    </div>
+</div>
+<!-- Timeframe Selector -->
+<div class="flex justify-between border-b border-neutral-soft/10 mb-6">
+<button class="px-3 py-2 text-xs font-medium text-neutral-soft">1ש</button>
+<button class="px-3 py-2 text-xs font-medium text-neutral-soft">1ח</button>
+<button class="px-3 py-2 text-xs font-bold text-primary border-b-2 border-primary">3ח</button>
+<button class="px-3 py-2 text-xs font-medium text-neutral-soft">6ח</button>
+<button class="px-3 py-2 text-xs font-medium text-neutral-soft">הכל</button>
+</div>
+<!-- Placeholder for Graph -->
+<div class="relative h-48 w-full mt-4">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 400 150">
+<defs>
+<lineargradient id="lineGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#bbff00" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#bbff00" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Grid Lines -->
+<line opacity="0.2" stroke="#96998c" stroke-dasharray="4" stroke-width="0.5" x1="0" x2="400" y1="0" y2="0"></line>
+<line opacity="0.2" stroke="#96998c" stroke-dasharray="4" stroke-width="0.5" x1="0" x2="400" y1="50" y2="50"></line>
+<line opacity="0.2" stroke="#96998c" stroke-dasharray="4" stroke-width="0.5" x1="0" x2="400" y1="100" y2="100"></line>
+<line opacity="0.2" stroke="#96998c" stroke-dasharray="4" stroke-width="0.5" x1="0" x2="400" y1="150" y2="150"></line>
+<!-- Area -->
+<path d="M0,130 Q50,110 100,120 T200,80 T300,60 T400,40 V150 H0 Z" fill="url(#lineGradient)"></path>
+<!-- Line -->
+<path d="M0,130 Q50,110 100,120 T200,80 T300,60 T400,40" fill="none" stroke="#bbff00" stroke-linecap="round" stroke-width="3"></path>
+<!-- Active Point -->
+<circle class="animate-pulse" cx="300" cy="60" fill="#bbff00" r="5"></circle>
+<circle cx="300" cy="60" fill="none" opacity="0.5" r="10" stroke="#bbff00" stroke-width="1"></circle>
+</svg>
+<!-- Tooltip -->
+<div class="absolute top-2 left-1/4 bg-neutral-strong text-background-dark p-2 rounded-lg text-[10px] font-bold shadow-xl border border-white/20">
+                        14 במאי: 10,200 ק״ג
+                    </div>
+</div>
+<div class="flex justify-between mt-4">
+<span class="text-[10px] text-neutral-soft font-bold">פברואר</span>
+<span class="text-[10px] text-neutral-soft font-bold">מרץ</span>
+<span class="text-[10px] text-neutral-soft font-bold">אפריל</span>
+<span class="text-[10px] text-neutral-soft font-bold">מאי</span>
+</div>
+</div>
+</div>
+<!-- Insights / Stat Cards -->
+<div class="px-4 grid grid-cols-2 gap-4">
+<div class="bg-neutral-soft/5 border border-neutral-soft/10 rounded-xl p-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-xl">workspace_premium</span>
+<p class="text-neutral-soft text-xs font-medium">שיא אישי</p>
+</div>
+<h3 class="text-xl font-bold tracking-tight text-neutral-strong">145 <span class="text-sm font-normal text-neutral-soft">ק״ג</span></h3>
+<p class="text-[10px] text-primary mt-1">שבירת שיא לפני 3 ימים</p>
+</div>
+<div class="bg-neutral-soft/5 border border-neutral-soft/10 rounded-xl p-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-xl">history</span>
+<p class="text-neutral-soft text-xs font-medium">אימון אחרון</p>
+</div>
+<h3 class="text-xl font-bold tracking-tight text-neutral-strong">12 <span class="text-sm font-normal text-neutral-soft">סטים</span></h3>
+<p class="text-[10px] text-neutral-soft mt-1">נפח כולל: 4,200 ק״ג</p>
+</div>
+</div>
+<!-- Muscle Map / Details -->
+<div class="p-4 mt-2">
+<h3 class="text-neutral-strong font-bold mb-4 px-1">פירוט עומסים לפי תרגיל</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between bg-neutral-soft/5 p-3 rounded-lg border border-neutral-soft/10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">layers</span>
+</div>
+<div>
+<p class="text-sm font-bold">לחיצת חזה במוט</p>
+<p class="text-[10px] text-neutral-soft">3 סטים • 10 חזרות</p>
+</div>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold">100 ק״ג</p>
+<p class="text-[10px] text-primary">+5%</p>
+</div>
+</div>
+<div class="flex items-center justify-between bg-neutral-soft/5 p-3 rounded-lg border border-neutral-soft/10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">layers</span>
+</div>
+<div>
+<p class="text-sm font-bold">לחיצת חזה בשיפוע</p>
+<p class="text-[10px] text-neutral-soft">4 סטים • 12 חזרות</p>
+</div>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold">85 ק״ג</p>
+<p class="text-[10px] text-neutral-soft">ללא שינוי</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-background-dark/90 backdrop-blur-xl border-t border-neutral-soft/20 px-6 py-3 flex justify-between items-center z-50">
+<a class="flex flex-col items-center gap-1 text-neutral-soft" href="#">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="text-[10px] font-medium">בית</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-neutral-soft" href="#">
+<span class="material-symbols-outlined text-2xl">fitness_center</span>
+<span class="text-[10px] font-medium">אימונים</span>
+</a>
+<div class="relative -top-6">
+<button class="w-14 h-14 bg-primary text-background-dark rounded-full shadow-lg shadow-primary/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl font-bold">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+<span class="text-[10px] font-bold">התקדמות</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-neutral-soft" href="#">
+<span class="material-symbols-outlined text-2xl">person</span>
+<span class="text-[10px] font-medium">פרופיל</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,378 @@
+[
+  {
+    "id": "ex-bench-press",
+    "name": "Bench Press",
+    "icon": "\ud83c\udfcb\ufe0f",
+    "primaryMuscles": ["Chest"],
+    "secondaryMuscles": ["Triceps", "Shoulders (Front Delt)"],
+    "restSeconds": 120
+  },
+  {
+    "id": "ex-incline-bench-press",
+    "name": "Incline Bench Press",
+    "icon": "\ud83c\udfcb\ufe0f",
+    "primaryMuscles": ["Chest", "Shoulders (Front Delt)"],
+    "secondaryMuscles": ["Triceps"],
+    "restSeconds": 120
+  },
+  {
+    "id": "ex-dumbbell-flyes",
+    "name": "Dumbbell Flyes",
+    "icon": "\ud83e\uddb6",
+    "primaryMuscles": ["Chest"],
+    "secondaryMuscles": ["Shoulders (Front Delt)"],
+    "restSeconds": 90
+  },
+  {
+    "id": "ex-cable-crossover",
+    "name": "Cable Crossover",
+    "icon": "\ud83d\udcaa",
+    "primaryMuscles": ["Chest"],
+    "secondaryMuscles": ["Shoulders (Front Delt)"],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-push-ups",
+    "name": "Push-Ups",
+    "icon": "\ud83e\uddd1\u200d\ud83d\udcbb",
+    "primaryMuscles": ["Chest"],
+    "secondaryMuscles": ["Triceps", "Shoulders (Front Delt)"],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-overhead-press",
+    "name": "Overhead Press",
+    "icon": "\ud83c\udfcb\ufe0f",
+    "primaryMuscles": ["Shoulders (Front Delt)", "Shoulders (Side Delt)"],
+    "secondaryMuscles": ["Triceps"],
+    "restSeconds": 120
+  },
+  {
+    "id": "ex-lateral-raise",
+    "name": "Lateral Raise",
+    "icon": "\ud83d\ude4c",
+    "primaryMuscles": ["Shoulders (Side Delt)"],
+    "secondaryMuscles": ["Shoulders (Front Delt)"],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-face-pull",
+    "name": "Face Pull",
+    "icon": "\ud83e\uddd8",
+    "primaryMuscles": ["Shoulders (Rear Delt)"],
+    "secondaryMuscles": ["Back (Traps)"],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-reverse-flyes",
+    "name": "Reverse Flyes",
+    "icon": "\ud83e\uddb6",
+    "primaryMuscles": ["Shoulders (Rear Delt)"],
+    "secondaryMuscles": ["Back (Traps)"],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-arnold-press",
+    "name": "Arnold Press",
+    "icon": "\ud83d\udcaa",
+    "primaryMuscles": ["Shoulders (Front Delt)", "Shoulders (Side Delt)"],
+    "secondaryMuscles": ["Triceps"],
+    "restSeconds": 90
+  },
+  {
+    "id": "ex-barbell-row",
+    "name": "Barbell Row",
+    "icon": "\ud83c\udfcb\ufe0f",
+    "primaryMuscles": ["Back (Lats)"],
+    "secondaryMuscles": ["Biceps", "Back (Lower Back)"],
+    "restSeconds": 120
+  },
+  {
+    "id": "ex-pull-ups",
+    "name": "Pull-Ups",
+    "icon": "\ud83e\uddd7",
+    "primaryMuscles": ["Back (Lats)"],
+    "secondaryMuscles": ["Biceps", "Shoulders (Rear Delt)"],
+    "restSeconds": 120
+  },
+  {
+    "id": "ex-lat-pulldown",
+    "name": "Lat Pulldown",
+    "icon": "\ud83d\udcaa",
+    "primaryMuscles": ["Back (Lats)"],
+    "secondaryMuscles": ["Biceps"],
+    "restSeconds": 90
+  },
+  {
+    "id": "ex-seated-cable-row",
+    "name": "Seated Cable Row",
+    "icon": "\ud83d\udea3",
+    "primaryMuscles": ["Back (Lats)", "Back (Traps)"],
+    "secondaryMuscles": ["Biceps"],
+    "restSeconds": 90
+  },
+  {
+    "id": "ex-t-bar-row",
+    "name": "T-Bar Row",
+    "icon": "\ud83c\udfcb\ufe0f",
+    "primaryMuscles": ["Back (Lats)", "Back (Traps)"],
+    "secondaryMuscles": ["Biceps", "Back (Lower Back)"],
+    "restSeconds": 120
+  },
+  {
+    "id": "ex-shrugs",
+    "name": "Shrugs",
+    "icon": "\ud83e\uddd1",
+    "primaryMuscles": ["Back (Traps)"],
+    "secondaryMuscles": [],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-deadlift",
+    "name": "Deadlift",
+    "icon": "\ud83c\udfcb\ufe0f",
+    "primaryMuscles": ["Back (Lower Back)", "Glutes", "Hamstrings"],
+    "secondaryMuscles": ["Back (Traps)", "Forearms", "Quads"],
+    "restSeconds": 180
+  },
+  {
+    "id": "ex-back-extension",
+    "name": "Back Extension",
+    "icon": "\ud83e\uddd8",
+    "primaryMuscles": ["Back (Lower Back)"],
+    "secondaryMuscles": ["Glutes", "Hamstrings"],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-barbell-curl",
+    "name": "Barbell Curl",
+    "icon": "\ud83d\udcaa",
+    "primaryMuscles": ["Biceps"],
+    "secondaryMuscles": ["Forearms"],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-dumbbell-curl",
+    "name": "Dumbbell Curl",
+    "icon": "\ud83d\udcaa",
+    "primaryMuscles": ["Biceps"],
+    "secondaryMuscles": ["Forearms"],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-hammer-curl",
+    "name": "Hammer Curl",
+    "icon": "\ud83d\udd28",
+    "primaryMuscles": ["Biceps", "Forearms"],
+    "secondaryMuscles": [],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-preacher-curl",
+    "name": "Preacher Curl",
+    "icon": "\ud83d\udcaa",
+    "primaryMuscles": ["Biceps"],
+    "secondaryMuscles": [],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-tricep-pushdown",
+    "name": "Tricep Pushdown",
+    "icon": "\ud83d\udcaa",
+    "primaryMuscles": ["Triceps"],
+    "secondaryMuscles": [],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-skull-crushers",
+    "name": "Skull Crushers",
+    "icon": "\ud83d\udcaa",
+    "primaryMuscles": ["Triceps"],
+    "secondaryMuscles": [],
+    "restSeconds": 90
+  },
+  {
+    "id": "ex-overhead-tricep-extension",
+    "name": "Overhead Tricep Extension",
+    "icon": "\ud83d\udcaa",
+    "primaryMuscles": ["Triceps"],
+    "secondaryMuscles": [],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-dips",
+    "name": "Dips",
+    "icon": "\ud83e\uddd7",
+    "primaryMuscles": ["Triceps", "Chest"],
+    "secondaryMuscles": ["Shoulders (Front Delt)"],
+    "restSeconds": 90
+  },
+  {
+    "id": "ex-wrist-curls",
+    "name": "Wrist Curls",
+    "icon": "\u270a",
+    "primaryMuscles": ["Forearms"],
+    "secondaryMuscles": [],
+    "restSeconds": 45
+  },
+  {
+    "id": "ex-reverse-wrist-curls",
+    "name": "Reverse Wrist Curls",
+    "icon": "\u270a",
+    "primaryMuscles": ["Forearms"],
+    "secondaryMuscles": [],
+    "restSeconds": 45
+  },
+  {
+    "id": "ex-squat",
+    "name": "Squat",
+    "icon": "\ud83c\udfcb\ufe0f",
+    "primaryMuscles": ["Quads", "Glutes"],
+    "secondaryMuscles": ["Hamstrings", "Back (Lower Back)", "Abs"],
+    "restSeconds": 180
+  },
+  {
+    "id": "ex-leg-press",
+    "name": "Leg Press",
+    "icon": "\ud83e\uddb5",
+    "primaryMuscles": ["Quads", "Glutes"],
+    "secondaryMuscles": ["Hamstrings"],
+    "restSeconds": 120
+  },
+  {
+    "id": "ex-leg-extension",
+    "name": "Leg Extension",
+    "icon": "\ud83e\uddb5",
+    "primaryMuscles": ["Quads"],
+    "secondaryMuscles": [],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-front-squat",
+    "name": "Front Squat",
+    "icon": "\ud83c\udfcb\ufe0f",
+    "primaryMuscles": ["Quads"],
+    "secondaryMuscles": ["Glutes", "Abs"],
+    "restSeconds": 120
+  },
+  {
+    "id": "ex-lunges",
+    "name": "Lunges",
+    "icon": "\ud83e\uddb5",
+    "primaryMuscles": ["Quads", "Glutes"],
+    "secondaryMuscles": ["Hamstrings"],
+    "restSeconds": 90
+  },
+  {
+    "id": "ex-bulgarian-split-squat",
+    "name": "Bulgarian Split Squat",
+    "icon": "\ud83e\uddb5",
+    "primaryMuscles": ["Quads", "Glutes"],
+    "secondaryMuscles": ["Hamstrings"],
+    "restSeconds": 90
+  },
+  {
+    "id": "ex-romanian-deadlift",
+    "name": "Romanian Deadlift",
+    "icon": "\ud83c\udfcb\ufe0f",
+    "primaryMuscles": ["Hamstrings", "Glutes"],
+    "secondaryMuscles": ["Back (Lower Back)"],
+    "restSeconds": 120
+  },
+  {
+    "id": "ex-leg-curl",
+    "name": "Leg Curl",
+    "icon": "\ud83e\uddb5",
+    "primaryMuscles": ["Hamstrings"],
+    "secondaryMuscles": [],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-hip-thrust",
+    "name": "Hip Thrust",
+    "icon": "\ud83c\udfcb\ufe0f",
+    "primaryMuscles": ["Glutes"],
+    "secondaryMuscles": ["Hamstrings"],
+    "restSeconds": 90
+  },
+  {
+    "id": "ex-glute-kickback",
+    "name": "Glute Kickback",
+    "icon": "\ud83e\uddb5",
+    "primaryMuscles": ["Glutes"],
+    "secondaryMuscles": ["Hamstrings"],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-crunches",
+    "name": "Crunches",
+    "icon": "\ud83e\uddd8",
+    "primaryMuscles": ["Abs"],
+    "secondaryMuscles": [],
+    "restSeconds": 45
+  },
+  {
+    "id": "ex-hanging-leg-raise",
+    "name": "Hanging Leg Raise",
+    "icon": "\ud83e\uddd7",
+    "primaryMuscles": ["Abs"],
+    "secondaryMuscles": ["Forearms"],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-plank",
+    "name": "Plank",
+    "icon": "\ud83e\uddd8",
+    "primaryMuscles": ["Abs"],
+    "secondaryMuscles": ["Shoulders (Front Delt)"],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-cable-crunch",
+    "name": "Cable Crunch",
+    "icon": "\ud83e\uddd8",
+    "primaryMuscles": ["Abs"],
+    "secondaryMuscles": [],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-ab-wheel-rollout",
+    "name": "Ab Wheel Rollout",
+    "icon": "\ud83d\udea8",
+    "primaryMuscles": ["Abs"],
+    "secondaryMuscles": ["Shoulders (Front Delt)", "Back (Lats)"],
+    "restSeconds": 90
+  },
+  {
+    "id": "ex-calf-raise",
+    "name": "Standing Calf Raise",
+    "icon": "\ud83e\uddb6",
+    "primaryMuscles": ["Calves"],
+    "secondaryMuscles": [],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-seated-calf-raise",
+    "name": "Seated Calf Raise",
+    "icon": "\ud83e\uddb6",
+    "primaryMuscles": ["Calves"],
+    "secondaryMuscles": [],
+    "restSeconds": 60
+  },
+  {
+    "id": "ex-chest-dip",
+    "name": "Chest Dip",
+    "icon": "\ud83e\uddd7",
+    "primaryMuscles": ["Chest"],
+    "secondaryMuscles": ["Triceps", "Shoulders (Front Delt)"],
+    "restSeconds": 90
+  },
+  {
+    "id": "ex-close-grip-bench",
+    "name": "Close-Grip Bench Press",
+    "icon": "\ud83c\udfcb\ufe0f",
+    "primaryMuscles": ["Triceps", "Chest"],
+    "secondaryMuscles": ["Shoulders (Front Delt)"],
+    "restSeconds": 120
+  }
+]

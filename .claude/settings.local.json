@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(npm install:*)",
+      "Bash(npm ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(npx vite:*)",
+      "WebSearch",
+      "WebFetch(domain:www.exercisedb.dev)",
+      "WebFetch(domain:rapidapi.com)",
+      "WebFetch(domain:edb-docs.up.railway.app)",
+      "WebFetch(domain:v2.exercisedb.io)",
+      "WebFetch(domain:github.com)",
+      "Bash(npm run:*)",
+      "Bash(ls:*)"
+    ]
+  }
+}
